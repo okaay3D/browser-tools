@@ -10,13 +10,12 @@ export interface ToolDefinition {
 }
 
 export const TOOLS: ToolDefinition[] = [
-    // {
-    //     slug: 'percentage-calculator',
-    //     title: 'Prozentrechner',
-    //     description: 'Berechne Prozentwerte.',
-    //     category: 'math',
-    //     loadComponent: () =>
-    //         import('./percentage-calculator/percentage-calculator')
-    //             .then(m => m.PercentageCalculator),
-    // },
+    {
+        slug: 'word-counter',
+        title: 'Word Counter',
+        description: 'Count words and characters in your text.',
+        category: 'text',
+        loadComponent: () =>
+            import('./word-counter/word-counter').then(m => m.WordCounter),
+    }
 ];
