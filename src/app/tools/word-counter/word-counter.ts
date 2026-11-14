@@ -1,5 +1,5 @@
 import { Component, computed, signal } from '@angular/core';
-import { countWords } from './count-words';
+import { countCharacters, countWords } from './count-words';
 
 @Component({
   imports: [],
@@ -11,4 +11,6 @@ export class WordCounter {
   readonly text = signal('');
 
   readonly wordCount = computed(() => countWords(this.text()));
+  
+  readonly characterCount = computed(() => countCharacters(this.text()));
 }
