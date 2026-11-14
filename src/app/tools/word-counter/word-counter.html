@@ -1,1 +1,9 @@
-<p>word-counter works!</p>
+<div>
+    <textarea
+        aria-label="Text"
+        #textInput
+        (input)="text.set(textInput.value)"></textarea>
+
+    <span>Words</span>
+    <output aria-label="Words">{{ wordCount() }}</output>
+</div>
