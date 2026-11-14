@@ -1,4 +1,4 @@
-import { countWords } from './count-words';
+import { countCharacters, countWords } from './count-words';
 
 describe('countWords', () => {
     it('counts words separated by spaces', () => {
@@ -111,5 +111,47 @@ describe('countWords', () => {
         const result = countWords(text);
 
         expect(result).toBe(2);
+    });
+});
+
+describe('countCharacters', () => {
+    it('counts characters including spaces', () => {
+        const text = 'Hello world';
+
+        const result = countCharacters(text);
+
+        expect(result).toBe(11);
+    });
+
+    it('counts an emoji as single character', () => {
+        const text = '😎';
+
+        const result = countCharacters(text);
+
+        expect(result).toBe(1);
+    });
+
+    it('counts an emoji with a skin tone modifier as a single character', () => {
+        const text = '👍🏽';
+
+        const result = countCharacters(text);
+
+        expect(result).toBe(1);
+    });
+
+    it('counts emojis made of multiple code points as a single character', () => {
+        const text = '👨‍👩‍👧‍👦';
+
+        const result = countCharacters(text);
+
+        expect(result).toBe(1);
+    });
+
+    it('returns zero for empty text', () => {
+        const text = '';
+
+        const result = countCharacters(text);
+
+        expect(result).toBe(0);
     });
 });
