@@ -17,5 +17,13 @@ export const TOOLS: ToolDefinition[] = [
         category: 'text',
         loadComponent: () =>
             import('./word-counter/word-counter').then(m => m.WordCounter),
-    }
+    },
+    {
+        slug: 'percentage-calculator',
+        title: 'Percentage Calculator',
+        description: 'Calculate percentages, percentage changes, and percentage differences.',
+        category: 'math',
+        loadComponent: () =>
+            import('./percentage-calculator/percentage-calculator').then(m => m.PercentageCalculator),
+    },
 ];
