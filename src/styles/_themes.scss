@@ -1,0 +1,57 @@
+// Semantic CSS custom properties make Light/Dark changes runtime-safe.
+// "system" is the absence of data-theme; automatic preference changes need no JS listener.
+@mixin light-colors {
+  color-scheme: light;
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-inset: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-border-control: #cbd5e1;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-accent: #0f766e;
+  --color-accent-hover: #115e59;
+  --color-accent-soft: #f0fdfa;
+  --color-on-accent: #ffffff;
+  --color-error: #b91c1c;
+  --color-success: #166534;
+  --color-warning: #92400e;
+  --color-disabled-bg: #f1f5f9;
+  --color-overlay: rgb(15 23 42 / 45%);
+}
+
+@mixin dark-colors {
+  color-scheme: dark;
+  --color-bg: #171717;
+  --color-surface: #262626;
+  --color-surface-inset: #171717;
+  --color-border: #404040;
+  --color-border-control: #525252;
+  --color-text: #f5f5f5;
+  --color-text-muted: #a3a3a3;
+  --color-accent: #5eead4;
+  --color-accent-hover: #99f6e4;
+  --color-accent-soft: #18352f;
+  --color-on-accent: #172522;
+  --color-error: #fca5a5;
+  --color-success: #86efac;
+  --color-warning: #fcd34d;
+  --color-disabled-bg: #303030;
+  --color-overlay: rgb(0 0 0 / 65%);
+}
+
+:root {
+  @include light-colors;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include dark-colors;
+  }
+}
+
+:root[data-theme="dark"] {
+  @include dark-colors;
+}
+
+// :root[data-theme="light"] uses the default Light values even in a dark OS theme.

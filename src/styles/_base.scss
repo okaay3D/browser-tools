@@ -1,0 +1,63 @@
+@use "tokens" as t;
+@use "mixins" as m;
+
+:root {
+  font-family: t.$font-family;
+  font-synthesis: none;
+  // Tabular digits keep counters visually stable during updates.
+  font-variant-numeric: tabular-nums;
+}
+
+body {
+  min-width: 280px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: t.type-size(md);
+  font-weight: t.$font-weight-regular;
+  line-height: 1.5;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  @include m.focus-ring;
+
+  &:hover {
+    color: var(--color-accent-hover);
+  }
+}
+
+h1,
+.heading-1 {
+  font-size: t.type-size(xl);
+  font-weight: t.$font-weight-bold;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+h2,
+.heading-2 {
+  font-size: t.type-size(lg);
+  font-weight: t.$font-weight-semibold;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+}
+
+.text-muted { color: var(--color-text-muted); }
+.text-sm { font-size: t.type-size(sm); }
+.text-xs { font-size: t.type-size(xs); }
+.numeric { font-variant-numeric: tabular-nums; }
+
+// One global, easy-to-see keyboard focus policy. Specific components can opt into mixin.
+:where(button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+}

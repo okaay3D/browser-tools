@@ -1,0 +1,6 @@
+// Global entry point for Angular (angular.json -> styles: ["src/styles/styles.scss"]).
+@use "themes";
+@use "reset";
+@use "base";
+@use "components";
+@use "layout";

@@ -1,0 +1,208 @@
+@use "tokens" as t;
+@use "mixins" as m;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: t.space(2);
+  min-height: t.$control-height;
+  padding: t.space(2) t.space(3);
+  border: t.$stroke-width solid transparent;
+  border-radius: t.$radius;
+  font-size: t.type-size(sm);
+  font-weight: t.$font-weight-medium;
+  line-height: 1.25;
+  text-decoration: none;
+  white-space: normal;
+  @include m.transition-colors;
+  @include m.focus-ring;
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  &[aria-busy="true"] {
+    cursor: progress;
+  }
+
+  &--primary {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+
+    &:hover:not(:disabled):not([aria-disabled="true"]) {
+      background: var(--color-accent-hover);
+      color: var(--color-on-accent);
+    }
+  }
+
+  &--secondary {
+    background: var(--color-surface);
+    border-color: var(--color-border-control);
+    color: var(--color-text);
+
+    &:hover:not(:disabled):not([aria-disabled="true"]) {
+      border-color: var(--color-accent);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--color-text-muted);
+
+    &:hover:not(:disabled):not([aria-disabled="true"]) {
+      background: var(--color-accent-soft);
+      color: var(--color-text);
+    }
+  }
+
+  &--block { width: 100%; }
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: t.$control-height;
+  height: t.$control-height;
+  padding: t.space(2);
+  border: 1px solid var(--color-border-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  @include m.focus-ring;
+  @include m.transition-colors;
+
+  &:hover { border-color: var(--color-accent); }
+}
+
+.field {
+  display: grid;
+  gap: t.space(2);
+
+  &__label {
+    color: var(--color-text);
+    font-size: t.type-size(sm);
+    font-weight: t.$font-weight-medium;
+  }
+
+  &__control {
+    display: block;
+    width: 100%;
+    min-height: t.$control-height;
+    padding: t.space(2) t.space(3);
+    border: 1px solid var(--color-border-control);
+    border-radius: 0;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: t.type-size(md);
+    line-height: 1.4;
+    @include m.transition-colors;
+
+    &::placeholder { color: var(--color-text-muted); opacity: 1; }
+    &:hover:not(:disabled) { border-color: var(--color-accent); }
+    &:focus { border-color: var(--color-accent); }
+    @include m.focus-ring;
+    &:disabled { background: var(--color-disabled-bg); cursor: not-allowed; }
+  }
+
+  textarea.field__control {
+    min-height: 9rem;
+    resize: vertical;
+  }
+
+  &__help,
+  &__error {
+    font-size: t.type-size(xs);
+    line-height: 1.5;
+  }
+
+  &__help { color: var(--color-text-muted); }
+  &__error { color: var(--color-error); }
+
+  &--invalid .field__control,
+  .field__control[aria-invalid="true"] {
+    border-color: var(--color-error);
+  }
+}
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  gap: t.space(2);
+  min-width: 0;
+  min-height: 7rem;
+  padding: t.space(3);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+  @include m.transition-colors;
+  @include m.focus-ring;
+
+  // Icons have NO colored background (intentional styleguide decision).
+  &__icon { width: 1.25rem; height: 1.25rem; color: var(--color-accent); }
+  &__title { font-size: t.type-size(sm); font-weight: t.$font-weight-semibold; }
+  &__description { color: var(--color-text-muted); font-size: t.type-size(xs); }
+
+  &:hover { border-color: var(--color-accent); color: var(--color-text); }
+  &:focus-visible { border-color: var(--color-accent); }
+}
+
+.result {
+  display: grid;
+  gap: t.space(1);
+  padding: t.space(3);
+  border-radius: 0;
+  background: var(--color-accent-soft);
+
+  &__value {
+    color: var(--color-accent);
+    font-size: t.type-size(result);
+    line-height: 1.1;
+    font-weight: t.$font-weight-semibold;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+
+  &__label { color: var(--color-text); font-size: t.type-size(sm); }
+}
+
+.panel {
+  padding: t.space(3);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.inline-error {
+  display: flex;
+  align-items: start;
+  gap: t.space(1);
+  color: var(--color-error);
+  font-size: t.type-size(xs);
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 0; // Rotating square: no exceptions to the 0px rule.
+  display: inline-block;
+  vertical-align: middle;
+  animation: toolbox-spin 800ms linear infinite;
+}
+
+@keyframes toolbox-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation: none; border-style: dotted; }
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .icon-button,
+  .field__control { min-height: t.$control-height-touch; }
+  .icon-button { width: t.$control-height-touch; height: t.$control-height-touch; }
+}
