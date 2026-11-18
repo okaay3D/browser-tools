@@ -1,1 +1,22 @@
-<p>percentage-calculator works!</p>
+<input
+    type="number"
+    aria-label="Percentage"
+    #percentageInput
+    (input)="percentage.set(percentageInput.value)"
+    />
+
+<input
+    type="number"
+    aria-label="Base value"
+    #baseValueInput
+    (input)="baseValue.set(baseValueInput.value)"
+    />
+
+<output aria-label="Result">
+@if (result() !== null) {
+    {{ result() }}
+}
+@else {
+    —
+}
+</output>
