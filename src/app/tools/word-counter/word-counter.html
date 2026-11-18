@@ -1,12 +1,13 @@
-<section class="word-counter">
-    <header class="header">
+<section class="word-counter main__inner tool-workspace">
+    <header class="page-header">
         <h1>Word Counter</h1>
-        <p>Count words and characters instantly.</p>
+        <p class="page-header__description">Count words and characters instantly.</p>
     </header>
 
-    <div class="input">
-        <label for="text-input">Your text</label>
+    <div class="field">
+        <label class="field__label" for="text-input">Your text</label>
         <textarea
+            class="field__control"
             id="text-input"
             aria-label="Text"
             placeholder="Start typing or paste your text here..."
@@ -14,17 +15,17 @@
             (input)="text.set(textInput.value)"></textarea>
     </div>
 
-    <div class="stats">
-        <div class="stat-card">
-            <span class="label">Words</span>
-            <output class="value" aria-label="Words">
+    <div class="result-grid">
+        <div class="result">
+            <span class="result__label">Words</span>
+            <output class="result__value" aria-label="Words">
                 {{ wordCount() }}
             </output>
         </div>
 
-        <div class="stat-card">
-            <span class="label">Characters</span>
-            <output class="value" aria-label="Characters">
+        <div class="result">
+            <span class="result__label">Characters</span>
+            <output class="result__value" aria-label="Characters">
                 {{ characterCount() }}
             </output>
         </div>
