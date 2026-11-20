@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PercentageCalculator } from './percentage-calculator';
 
+const placeholder = '—';
+
 describe('PercentageCalculator', () => {
   let component: PercentageCalculator;
   let fixture: ComponentFixture<PercentageCalculator>;
@@ -14,6 +16,21 @@ describe('PercentageCalculator', () => {
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
+
+  function setInputValue(
+    label: 'Percentage' | 'Base value',
+    value: string
+  ): void {
+    const input: HTMLInputElement | null =
+      fixture.nativeElement.querySelector(`input[aria-label="${label}"]`);
+
+    if (!input) {
+      throw new Error(`Input "${label}" not found`);
+    }
+
+    input.value = value;
+    input.dispatchEvent(new Event('input'));
+  }
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -38,48 +55,67 @@ describe('PercentageCalculator', () => {
       throw Error('Result element not found');
     }
 
-    expect(result.textContent.trim()).toBe('—');
+    expect(result.textContent.trim()).toBe(placeholder);
   });
 
   it('displays the result when both inputs are provided', () => {
-    const percentageInput: HTMLInputElement | null =
-      fixture.nativeElement.querySelector('input[aria-label="Percentage"]');
+    setInputValue('Percentage', '20');
+    setInputValue('Base value', '150');
 
-    const baseValueInput: HTMLInputElement | null =
-      fixture.nativeElement.querySelector('input[aria-label="Base value"]');
+    fixture.detectChanges();
 
     const result: HTMLOutputElement | null =
       fixture.nativeElement.querySelector('output[aria-label="Result"]');
-
-    percentageInput!.value = '20';
-    percentageInput!.dispatchEvent(new Event('input'));
-
-    baseValueInput!.value = '150';
-    baseValueInput!.dispatchEvent(new Event('input'));
-
-    fixture.detectChanges();
 
     expect(result!.textContent.trim()).toBe('30');
   });
 
   it('displays zero instead of the placeholder', () => {
-    const percentageInput: HTMLInputElement | null =
-      fixture.nativeElement.querySelector('input[aria-label="Percentage"]');
+    setInputValue('Percentage', '0');
+    setInputValue('Base value', '150');
 
-    const baseValueInput: HTMLInputElement | null =
-      fixture.nativeElement.querySelector('input[aria-label="Base value"]');
+    fixture.detectChanges();
 
     const result: HTMLOutputElement | null =
       fixture.nativeElement.querySelector('output[aria-label="Result"]');
 
-    percentageInput!.value = '0';
-    percentageInput!.dispatchEvent(new Event('input'));
+    expect(result!.textContent.trim()).toBe('0');
+  });
 
-    baseValueInput!.value = '150';
-    baseValueInput!.dispatchEvent(new Event('input'));
+  it('displays a placeholder when the calculation overflows', () => {
+    setInputValue('Percentage', '1000');
+    setInputValue('Base value', '1e308');
 
     fixture.detectChanges();
 
-    expect(result!.textContent.trim()).toBe('0');
+    const result: HTMLOutputElement | null =
+      fixture.nativeElement.querySelector('output[aria-label="Result"]');
+
+    expect(result!.textContent.trim()).toBe(placeholder);
   });
+
+  
+  it.for([
+    { input: 'Percentage' },
+    { input: 'Base value' },
+  ] as const)(
+    'displays a placeholder when $input is cleared',
+    ({ input }) => {
+      setInputValue('Percentage', '10');
+      setInputValue('Base value', '50');
+
+      fixture.detectChanges();
+
+      const result: HTMLOutputElement | null =
+        fixture.nativeElement.querySelector('output[aria-label="Result"]');
+
+      expect(result!.textContent.trim()).toBe('5');
+
+      setInputValue(input, '');
+
+      fixture.detectChanges();
+
+      expect(result!.textContent.trim()).toBe(placeholder);
+    }
+  );
 });

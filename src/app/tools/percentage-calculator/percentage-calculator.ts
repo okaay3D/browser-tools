@@ -13,13 +13,32 @@ export class PercentageCalculator {
   readonly baseValue = signal('');
 
   readonly result = computed(() => {
-    if (/\d+/.test(this.percentage()) && /\d+/.test(this.baseValue())) {
-      return calculatePercentage({
-        percentage: Number(this.percentage()),
-        baseValue: Number(this.baseValue()),
-      });
+    const percentageNumber = parseFiniteNumber(this.percentage());
+    const baseValueNumber = parseFiniteNumber(this.baseValue());
+
+    if (percentageNumber === null || baseValueNumber === null) {
+      return null;
     }
 
-    return null;
+    const calculatedResult = calculatePercentage({
+      percentage: percentageNumber,
+      baseValue: baseValueNumber,
+    });
+
+    return Number.isFinite(calculatedResult)
+      ? calculatedResult
+      : null;
   });
+}
+
+function parseFiniteNumber(value: string): number | null {
+  if (value.trim() === '') {
+    return null;
+  }
+
+  const number = Number(value);
+
+  return Number.isFinite(number)
+    ? number
+    : null;
 }
